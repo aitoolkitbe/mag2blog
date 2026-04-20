@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mag2Blog — De Content Studio</title>
+  <meta name="description" content="Geef je magazine-content de online doorvertaling die het verdient. Een tool van De Content Studio, op maat geconfigureerd voor jouw merk.">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-dark: #1a1a1a;
+      --color-text: #333;
+      --color-muted: #666;
+      --color-accent: #C8E619;
+      --color-accent-dark: #a8c200;
+      --color-accent-light: #f3fad0;
+      --color-card: #fafafa;
+      --color-border: #e5e5e5;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+      --radius: 4px;
+      --max-w: 780px;
+      --max-w-wide: 1080px;
+      --font-heading: 'Montserrat', -apple-system, sans-serif;
+      --font-sans: 'Montserrat', -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.7;
+      font-size: 16px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .container-wide { max-width: var(--max-w-wide); margin: 0 auto; padding: 0 24px; }
+
+    /* NAV — minimal */
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav .container-wide {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .logo img {
+      height: 40px;
+      width: auto;
+    }
+    .nav-link {
+      font-size: 14px;
+      color: var(--color-dark);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+      padding: 8px 20px;
+      background: var(--color-accent);
+      border-radius: var(--radius);
+    }
+    .nav-link:hover { background: var(--color-accent-dark); }
+
+    /* HERO — editorial, not salesy */
+    .hero {
+      padding: 100px 0 60px;
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(32px, 4.5vw, 46px);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--color-dark);
+      margin-bottom: 28px;
+      letter-spacing: -0.5px;
+      text-transform: none;
+    }
+    .hero-intro {
+      font-size: 19px;
+      color: var(--color-text);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .hero-intro + .hero-intro {
+      margin-bottom: 40px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: var(--color-accent);
+      margin: 60px 0;
+    }
+
+    /* PROSE SECTIONS */
+    section { padding: 0; }
+
+    .prose-section {
+      padding: 0 0 20px;
+    }
+
+    .prose-section h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 800;
+      color: var(--color-dark);
+      margin-bottom: 20px;
+      line-height: 1.25;
+    }
+
+    .prose-section p {
+      margin-bottom: 16px;
+      line-height: 1.75;
+    }
+
+    .prose-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* PROCESS — subtle cards, not flashy */
+    .process-section {
+      padding: 60px 0;
+      margin: 60px 0;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .process-section h2 {
+      font-family: var(--font-heading);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--color-dark);
+      margin-bottom: 40px;
+    }
+
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .process-step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .process-step-number {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--color-dark);
+      background: var(--color-accent);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .process-step-text h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 4px;
+    }
+
+    .process-step-text p {
+      font-size: 15px;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* DETAILS — expandable */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .detail-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .detail-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 8px;
+    }
+
+    .detail-card p {
+      font-size: 15px;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* AUDIENCE */
+    .audience-list {
+      margin-top: 24px;
+    }
+
+    .audience-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .audience-item:last-child {
+      border-bottom: none;
+    }
+
+    .audience-item h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 4px;
+    }
+
+    .audience-item p {
+      font-size: 15px;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* CTA — calm, inviting */
+    .cta-section {
+      margin: 60px 0 0;
+      padding: 60px 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .cta-section h2 {
+      font-family: var(--font-heading);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--color-dark);
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      color: var(--color-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-dark);
+      padding: 14px 32px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+    .btn-cta:hover { background: var(--color-accent-dark); }
+
+    /* FOOTER */
+    footer {
+      margin-top: 80px;
+      padding: 32px 0;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+      font-size: 14px;
+      color: var(--color-muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .hero { padding: 60px 0 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container-wide">
+    <a href="https://www.decontentstudio.be" class="logo"><img src="logo.png" alt="De Content Studio"></a>
+    <a href="#gesprek" class="nav-link">Neem contact op</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--color-accent-dark); margin-bottom: 16px;">Mag2Blog</div>
+    <h1>Geef je magazine-content de online doorvertaling die het verdient.</h1>
+    <p class="hero-intro">Er kruipt veel werk in een goed magazine. Interviews, achtergrondstukken, dossiers, reportages. Het resultaat is content waar je redactie terecht trots op is.</p>
+    <p class="hero-intro">Maar na publicatie stopt het bereik bij je printlezers. Terwijl online elke dag mensen zoeken naar precies de onderwerpen waar jullie magazine over schrijft.</p>
+    <p class="hero-intro">Mag2Blog helpt je om die brug te slaan. Niet met generieke AI-output, maar met een tool die op maat van jouw merk geconfigureerd wordt.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- THE REAL CHALLENGE -->
+  <section class="prose-section">
+    <h2>De doorvertaling naar online is lastiger dan ze lijkt.</h2>
+    <p>Een magazine-artikel herschrijven tot een goede blogpost is geen copy-paste klus. De structuur is anders, de leescontext is anders, de SEO-vereisten zijn anders. En dan zijn er nog de redactionele vragen: welke stukken zijn online relevant? Staat er al iets vergelijkbaars op je website? Hoe voorkom je dat je je eigen content cannibaliseert?</p>
+    <p>Die afweging kost tijd. Tijd die de meeste redacties niet hebben, want de volgende editie dient zich al aan.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHAT WE BUILT -->
+  <section class="prose-section">
+    <h2>Mag2Blog neemt dat denkwerk over.</h2>
+    <p>De tool automatiseert de stappen die aan het schrijven voorafgaan: inventarisatie van je magazine, vergelijking met je bestaande webcontent, SEO-analyse per onderwerp en herschrijving in jouw tone of voice.</p>
+    <p>Zodat de verhalen en boodschappen uit je magazine ook online hun impact hebben. Bij mensen die je via print nooit had bereikt.</p>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section">
+    <h2>Hoe dat er concreet uitziet</h2>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-step-number">1</div>
+        <div class="process-step-text">
+          <h3>Je uploadt je magazine als PDF</h3>
+          <p>De tool leest je volledige editie en herkent elk individueel artikel, met titel, intro en rubriek. Geen manueel knippen en plakken.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="process-step-number">2</div>
+        <div class="process-step-text">
+          <h3>De tool analyseert wat online relevant is</h3>
+          <p>Elk magazine-artikel wordt vergeleken met je volledige website-inventaris. Is er al een artikel over dit onderwerp? Dan stelt de tool een update voor in plaats van iets nieuws. Zo voorkom je duplicate content. Per onderwerp zie je zoekvolume, keyword difficulty en traffic potential.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="process-step-number">3</div>
+        <div class="process-step-text">
+          <h3>Jij kiest, de tool schrijft</h3>
+          <p>Je selecteert welke artikelen je wilt doorvertalen. De AI herschrijft ze tot blogartikelen in jouw schrijfstijl, met interne links, SEO-structuur en een ingebouwde eindredactie. Inclusief anti-AI-slop check, zodat het klinkt als jouw redactie. Niet als een chatbot.</p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="process-step-number">4</div>
+        <div class="process-step-text">
+          <h3>Download en publiceer</h3>
+          <p>Exporteer als Markdown of Word. Kopieer naar je CMS, stuur door naar je webredacteur, of publiceer rechtstreeks. De tekst is een startpunt dat je 80% van het werk bespaart. De laatste 20% is aan je redactie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOM CONFIG -->
+  <section class="prose-section">
+    <h2>Elke Mag2Blog is anders.</h2>
+    <p>We geloven niet in one-size-fits-all. Techbedrijven beweren graag dat hun oplossing universeel werkt. Onze ervaring leert het tegenovergestelde: een interview herschrijf je anders dan een achtergrondstuk. Een opiniestuk vraagt een andere aanpak dan een dossier. En de tone of voice van een automobielclub is niet die van een mutualiteit.</p>
+    <p>Daarom wordt elke Mag2Blog op maat geconfigureerd. We nemen de tijd om je rubrieken te leren kennen, je schrijfstijl te vertalen naar configuratie, en je website-architectuur in kaart te brengen. Dat maakt het verschil tussen generieke output en teksten die je redactie als bruikbaar startpunt ervaart.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHAT'S UNDER THE HOOD -->
+  <section class="prose-section">
+    <h2>Wat er onder de motorkap zit</h2>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h3>Duplicaatdetectie</h3>
+        <p>Vergelijkt elk magazine-artikel semantisch met je volledige website. Niet alleen op titel, ook op synoniemen, regio's en thema's. Stelt een update voor als er al verwante content bestaat.</p>
+      </div>
+      <div class="detail-card">
+        <h3>SEO-analyse per onderwerp</h3>
+        <p>Zoekvolume, keyword difficulty en traffic potential via Ahrefs. Per artikel zie je of er een reële zoekvraag achter zit.</p>
+      </div>
+      <div class="detail-card">
+        <h3>Configureerbare schrijfstijl</h3>
+        <p>Zinslengte, woordkeuze, verboden termen, merkspecifiek vocabulaire. Instelbaar per rubriektype en per titel als je meerdere magazines uitgeeft.</p>
+      </div>
+      <div class="detail-card">
+        <h3>Ingebouwde eindredactie</h3>
+        <p>Vijf controlerondes: tone of voice, actieve schrijfstijl, schrappen, AI-detectie en structuur. Inclusief een anti-AI-slop check zodat de output niet als AI leest.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FOR WHOM — not flashy cards, editorial tone -->
+  <section class="prose-section">
+    <h2>Voor wie dit relevant is</h2>
+
+    <div class="audience-list">
+      <div class="audience-item">
+        <h3>Uitgeverijen met meerdere printtitels</h3>
+        <p>Bij tientallen artikelen per editie, over meerdere titels heen, is manuele doorvertaling simpelweg niet haalbaar. Mag2Blog maakt dat wél werkbaar.</p>
+      </div>
+      <div class="audience-item">
+        <h3>Organisaties met ledenmagazines</h3>
+        <p>Mutualiteiten, vakbonden, federaties, automobielclubs. Het ledenblad bevat kennis en expertise die ook online gezocht wordt door leden en niet-leden.</p>
+      </div>
+      <div class="audience-item">
+        <h3>Merken met customer magazines</h3>
+        <p>Retailers, reisorganisaties, energiebedrijven. De investering in branded content rendeert meer als die verhalen ook online de juiste mensen bereiken.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHAT TO EXPECT -->
+  <section class="prose-section">
+    <h2>Wat je mag verwachten</h2>
+    <p>Mag2Blog levert sterke eerste versies. Het denkwerk, de structuur, de SEO-onderbouwing: dat zit erin. De fijnscherping en de laatste controle blijven bij je redactie. Zo hoort het ook.</p>
+    <p>In de praktijk betekent dat: waar je nu misschien drie tot vijf stukken per editie online krijgt, verwerk je met Mag2Blog een volledige editie in een ochtend.</p>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="gesprek">
+    <h2>Benieuwd hoe dat er voor jouw magazine uitziet?</h2>
+    <p>We geven je graag een demo. Vertel ons iets over je magazine en je team, dan laten we zien wat Mag2Blog voor jullie kan betekenen.</p>
+    <a href="mailto:aitoolkits@gmail.com?subject=Mag2Blog%20%E2%80%94%20interesse%20in%20een%20demo&body=Dag%2C%0A%0AIk%20hoor%20graag%20meer%20over%20Mag2Blog.%0A%0AOrganisatie%3A%20%0AMagazine%2Ftitel%3A%20%0AAantal%20edities%20per%20jaar%3A%20%0A%0AMvg" class="btn-cta">Neem contact op</a>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; <a href="https://www.decontentstudio.be" style="color: var(--color-muted); text-decoration: underline;">De Content Studio</a> — 2026</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
